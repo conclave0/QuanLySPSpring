@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 1, 2017 11:05:17 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojo.Sanpham" table="sanpham" catalog="ql_sanpham" optimistic-lock="version">
+        <id name="masp" type="string">
+            <column name="masp" length="10" />
+            <generator class="assigned" />
+        </id>
+        <property name="tensp" type="string">
+            <column name="tensp" length="100" />
+        </property>
+        <property name="mota" type="string">
+            <column name="mota" length="500" />
+        </property>
+        <property name="gia" type="string">
+            <column name="gia" length="15" />
+        </property>
+        <property name="soluong" type="java.lang.Integer">
+            <column name="soluong" />
+        </property>
+        <property name="xuatxu" type="string">
+            <column name="xuatxu" length="25" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+          http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+          http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd" >
+    
+    <import resource="/dispatcher-servlet.xml"/>
+    
+    <aop:config proxy-target-class="true"/>
+    <security:http auto-config="true" use-expressions="true">
+        <security:intercept-url pattern="/user/**" access="hasRole('ROLE_USER')"></security:intercept-url> 
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"></security:intercept-url>
+        <security:intercept-url pattern="/**" access="permitAll"></security:intercept-url>
+        <security:form-login login-page="/dangnhap.html" authentication-failure-url="/error.html"
+                                username-parameter="inputUsername" password-parameter="inputPassword" authentication-success-handler-ref="successAuthenticationHandler"
+                                login-processing-url="/j_spring_security_check"/>
+        <security:csrf/>
+        <security:logout logout-success-url="/dangnhap.html"></security:logout>
+        
+    </security:http>
+ 
+    <!-- Declare an authentication-manager to use a custom userDetailsService -->
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userDetailService"></security:authentication-provider>
+    </security:authentication-manager>
+    
+    <bean id="userDetailService"
+            class="service.userDetailService">  
+        <constructor-arg>
+            <ref bean="TaiKhoanDAO"/>
+         </constructor-arg>
+    </bean> 
+    
+    <bean id="successAuthenticationHandler"
+          class="handler.successAuthenticationHandler">
+    </bean>
+</beans>
